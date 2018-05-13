@@ -22,7 +22,7 @@ namespace CarouselViewIssue26Repro
             }
         }
 
-        private ObservableCollection<ItemViewModel> items;
+        private ObservableCollection<ItemViewModel> items = new ObservableCollection<ItemViewModel>();
         public ObservableCollection<ItemViewModel> Items
         {
             get
@@ -39,7 +39,7 @@ namespace CarouselViewIssue26Repro
         public Command<ItemViewModel> RemoveButtonCommand { get; set; }
         public Command AddButtonCommand { get; set; }
         public Command RemoveCurrentButtonCommand { get; set; }
-
+        public Command RestoreListButtonCommand { get; set; }
 
         private string log = "";
         public string Log
@@ -58,6 +58,7 @@ namespace CarouselViewIssue26Repro
             this.RemoveButtonCommand = new Command<ItemViewModel>(RemoveButtonCommand_Execute);
             this.AddButtonCommand = new Command(AddButtonCommand_Execute);
             this.RemoveCurrentButtonCommand = new Command(RemoveCurrentButtonCommand_Execute);
+            this.RestoreListButtonCommand = new Command(RestoreListButtonCommand_Execute);
         }
 
         protected void RemoveButtonCommand_Execute(ItemViewModel item)
@@ -83,15 +84,20 @@ namespace CarouselViewIssue26Repro
             Log += $"Removed item at index {CurrentIndex}\n";
         }
 
+        protected void RestoreListButtonCommand_Execute()
+        {
+            LoadSampleData();
+        }
+
         public void LoadSampleData()
         {
-            var sample = new ObservableCollection<ItemViewModel>();
-            sample.Add(new ItemViewModel() { Caption = "This is first item", AnotherCaption = "1" });
-            sample.Add(new ItemViewModel() { Caption = "This is second item", AnotherCaption = "2" });
-            sample.Add(new ItemViewModel() { Caption = "This is third item", AnotherCaption = "3" });
-            sample.Add(new ItemViewModel() { Caption = "This is fourth item", AnotherCaption = "4" });
-            sample.Add(new ItemViewModel() { Caption = "This is fifth item", AnotherCaption = "5" });
-            Items = sample;
+            Items.Clear();
+            Items.Add(new ItemViewModel() { Caption = "This is first item", AnotherCaption = "1" });
+            Items.Add(new ItemViewModel() { Caption = "This is second item", AnotherCaption = "2" });
+            Items.Add(new ItemViewModel() { Caption = "This is third item", AnotherCaption = "3" });
+            Items.Add(new ItemViewModel() { Caption = "This is fourth item", AnotherCaption = "4" });
+            Items.Add(new ItemViewModel() { Caption = "This is fifth item", AnotherCaption = "5" });
+
             Log += "Loaded sample data\n";
         }
 
